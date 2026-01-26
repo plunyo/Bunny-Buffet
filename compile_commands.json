@@ -1,0 +1,87 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/plunyo/Coding/Bunny-Buffet",
+    "file": "/home/plunyo/Coding/Bunny-Buffet/src/main.c",
+    "output": "/home/plunyo/Coding/Bunny-Buffet/build/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/entity/entity.o",
+      "src/entity/entity.c"
+    ],
+    "directory": "/home/plunyo/Coding/Bunny-Buffet",
+    "file": "/home/plunyo/Coding/Bunny-Buffet/src/entity/entity.c",
+    "output": "/home/plunyo/Coding/Bunny-Buffet/build/entity/entity.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/entity/predator.o",
+      "src/entity/predator.c"
+    ],
+    "directory": "/home/plunyo/Coding/Bunny-Buffet",
+    "file": "/home/plunyo/Coding/Bunny-Buffet/src/entity/predator.c",
+    "output": "/home/plunyo/Coding/Bunny-Buffet/build/entity/predator.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/entity/prey.o",
+      "src/entity/prey.c"
+    ],
+    "directory": "/home/plunyo/Coding/Bunny-Buffet",
+    "file": "/home/plunyo/Coding/Bunny-Buffet/src/entity/prey.c",
+    "output": "/home/plunyo/Coding/Bunny-Buffet/build/entity/prey.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-g",
+      "-Wall",
+      "-Werror",
+      "-Isrc",
+      "-DDEBUG=1",
+      "-c",
+      "-o",
+      "build/entity_manager/entity_manager.o",
+      "src/entity_manager/entity_manager.c"
+    ],
+    "directory": "/home/plunyo/Coding/Bunny-Buffet",
+    "file": "/home/plunyo/Coding/Bunny-Buffet/src/entity_manager/entity_manager.c",
+    "output": "/home/plunyo/Coding/Bunny-Buffet/build/entity_manager/entity_manager.o"
+  }
+]
