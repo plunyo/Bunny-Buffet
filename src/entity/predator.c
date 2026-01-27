@@ -15,6 +15,10 @@ void UpdatePredator(Entity *predator, float deltaTime) {
     // move towards prey, reduce health if starving, etc.
 }
 
+void UpdatePredatorState(Entity *predator) {
+    // placeholder: implement predator-specific state logic
+}
+
 // draw predator
 void DrawPredator(const Entity* predator, Texture2D* texture) {
     DrawTextureEx(
@@ -24,4 +28,4 @@ void DrawPredator(const Entity* predator, Texture2D* texture) {
         1.0f,
         WHITE
     );
-}
+} 

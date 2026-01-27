@@ -16,13 +16,17 @@ void UpdatePrey(Entity *prey, float deltaTime) {
     // move away from predators, eat grass, etc.
 }
 
+void UpdatePreyState(Entity *prey) {
+
+}
+
 // draw prey
 void DrawPrey(const Entity *prey, Texture2D* texture) {
     DrawTextureEx(
-        *texture, 
+        *texture,
         prey->position,
         0.0f,
-        1.0f,
+        0.8f,
         WHITE
     );
 }
