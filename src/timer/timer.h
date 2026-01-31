@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-typedef void (*TimerCallback)(void);
+typedef void (*TimerCallback)(void* context);
 
 typedef struct Timer {
     float elapsed;
@@ -12,9 +12,10 @@ typedef struct Timer {
     bool active;
 
     TimerCallback callback;
+    void* callbackContext;
 } Timer;
 
-Timer CreateTimer(float interval, bool repeat, TimerCallback callback);
+Timer CreateTimer(float interval, bool repeat, TimerCallback callback, void* callbackContext);
 void UpdateTimer(Timer* timer, float deltaTime);
 void ResetTimer(Timer* timer);
 void PlayTimer(Timer* timer);

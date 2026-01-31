@@ -1,6 +1,6 @@
 #include "timer/timer.h"
 
-Timer CreateTimer(float interval, bool repeat, TimerCallback callback) {
+Timer CreateTimer(float interval, bool repeat, TimerCallback callback, void* callbackContext) {
     Timer t;
 
     t.elapsed = 0.0f;
@@ -8,6 +8,7 @@ Timer CreateTimer(float interval, bool repeat, TimerCallback callback) {
     t.repeat = repeat;
     t.active = true;
     t.callback = callback;
+    t.callbackContext = callbackContext;
 
     return t;
 }
@@ -17,7 +18,7 @@ void UpdateTimer(Timer* timer, float deltaTime) {
 
     timer->elapsed += deltaTime;
     if (timer->elapsed >= timer->interval) {
-        timer->callback();
+        timer->callback(timer->callbackContext);
         if (timer->repeat) {
             timer->elapsed -= timer->interval;
         } else {

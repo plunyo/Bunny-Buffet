@@ -3,6 +3,8 @@
 #include <raylib.h>
 #include <stdlib.h>
 
+static void OnUpdateEntityStatesTimerFinished(void* context);
+
 // create manager
 EntityManager* CreateEntityManager(int initial_capacity) {
     EntityManager* manager = (EntityManager*)MemAlloc(sizeof(EntityManager));
@@ -16,15 +18,22 @@ EntityManager* CreateEntityManager(int initial_capacity) {
     manager->preyTexture = LoadTexture(PREY_TEXTURE_PATH);
     manager->predatorTexture = LoadTexture(PREDATOR_TEXTURE_PATH);
 
+    manager->updateEntityStatesTimer = CreateTimer(
+        1.0f, 
+        true, 
+        OnUpdateEntityStatesTimerFinished, 
+        manager
+    );
+
     return manager;
 }
 
 // destroy manager
 void DestroyEntityManager(EntityManager* manager) {
     for (int i = 0; i < manager->size; i++) {
-        if (manager->data[i] != NULL) {
-            MemFree(manager->data[i]);
-        }
+        if (manager->data[i] == NULL) continue;
+    
+        MemFree(manager->data[i]);
     }
 
     MemFree(manager->data);
@@ -48,6 +57,7 @@ int AddEntity(EntityManager* manager, Entity entity) {
             manager->data = (Entity**)MemRealloc(manager->data, sizeof(Entity*) * manager->capacity);
             manager->free_slots = (int*)MemRealloc(manager->free_slots, sizeof(int) * manager->capacity);
         }
+
         index = manager->size++;
     }
 
@@ -71,27 +81,41 @@ void RemoveEntity(EntityManager* manager, int index) {
 
 // update all entities
 void UpdateEntities(EntityManager* manager, float deltaTime) {
+    UpdateTimer(&manager->updateEntityStatesTimer, deltaTime);
+
     for (int i = 0; i < manager->size; i++) {
-        if (manager->data[i] != NULL) {
-            UpdateEntity(manager->data[i], deltaTime);
-        }
+        if (manager->data[i] == NULL) continue;
+        
+        UpdateEntity(manager->data[i], deltaTime);
+        
     }
 }
 
 // draw all entities
 void DrawEntities(const EntityManager* manager) {
     for (int i = 0; i < manager->size; i++) {
-        if (manager->data[i] != NULL) {
-            Entity* entity = manager->data[i];
+        if (manager->data[i] == NULL) continue;
     
-            switch (entity->type) {
-                case PREY:
-                    DrawPrey(entity, (Texture2D*)&manager->preyTexture);
-                    break;
-                case PREDATOR:
-                    DrawPredator(entity, (Texture2D*)&manager->predatorTexture);
-                    break;
-            }
+        Entity* entity = manager->data[i];
+
+        switch (entity->type) {
+            case PREY:
+                DrawPrey(entity, (Texture2D*)&manager->preyTexture);
+                break;
+            case PREDATOR:
+                DrawPredator(entity, (Texture2D*)&manager->predatorTexture);
+                break;
+            
+        }
+    }
+}
+
+static void OnUpdateEntityStatesTimerFinished(void* context) {
+    EntityManager* manager = (EntityManager*)context;
+
+    for (int i = 0; i < manager->size; i++) {
+        if (manager->data[i] != NULL) {
+            UpdateEntityState(manager->data[i]);
         }
     }
 }

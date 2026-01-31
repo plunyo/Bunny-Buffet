@@ -1,9 +1,11 @@
 #pragma once
 
 #include "entity/entity.h"
+#include "quadtree/quadtree.h"
+#include "timer/timer.h"
 
-#define PREDATOR_TEXTURE_PATH "assets/textures/kyluong_128.jpg"
-#define PREY_TEXTURE_PATH     "assets/textures/chaey_128.jpg"
+#define PREDATOR_TEXTURE_PATH "assets/textures/kyluong_256.jpg"
+#define PREY_TEXTURE_PATH     "assets/textures/chaey_256.jpg"
 
 typedef struct {
     Entity **data;
@@ -12,6 +14,10 @@ typedef struct {
 
     int free_count;
     int *free_slots;
+
+    QuadTree* quadTree;
+
+    Timer updateEntityStatesTimer;
 
     Texture2D preyTexture;
     Texture2D predatorTexture;
