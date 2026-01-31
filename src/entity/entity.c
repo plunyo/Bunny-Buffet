@@ -13,19 +13,6 @@ void UpdateEntity(Entity *entity, float deltaTime)
     }
 }
 
-// draws entity based on type
-void DrawEntity(const Entity* entity, Texture2D* texture)
-{
-    switch (entity->type) {
-        case PREY:
-            DrawPrey(entity, texture);
-            break;
-        case PREDATOR:
-            DrawPredator(entity, texture);
-            break;
-    }
-}
-
 // generic entity creation
 Entity CreateEntity(const char* name, EntityType type, Vector2 position, float speed, int health) {
     Entity entity;
