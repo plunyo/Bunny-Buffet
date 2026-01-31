@@ -1,11 +1,14 @@
 #pragma once
 
+#include "user_camera/user_camera.h"
 #include "entity/entity.h"
 #include "quadtree/quadtree.h"
 #include "timer/timer.h"
 
 #define PREDATOR_TEXTURE_PATH "assets/textures/kyluong_256.jpg"
 #define PREY_TEXTURE_PATH     "assets/textures/chaey_256.jpg"
+
+#define MAX_VISIBLE 10000
 
 typedef struct {
     Entity **data;
@@ -29,4 +32,5 @@ void DestroyEntityManager(EntityManager* manager);
 int AddEntity(EntityManager* manager, Entity entity);
 void RemoveEntity(EntityManager* manager, int index);
 void UpdateEntities(EntityManager* manager, float deltaTime);
-void DrawEntities(const EntityManager* manager);
+void BounceEntitiesInBounds(EntityManager* manager, Rectangle worldBounds);
+void DrawEntities(const EntityManager* manager, QuadTree* quadTree, UserCamera* cam);

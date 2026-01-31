@@ -1,7 +1,10 @@
 #include "entity_manager/entity_manager.h"
+#include "quadtree/quadtree.h"
+#include "user_camera/user_camera.h"
 
 #include <raylib.h>
 #include <stdlib.h>
+#include <rlgl.h>
 
 static void OnUpdateEntityStatesTimerFinished(void* context);
 
@@ -19,7 +22,7 @@ EntityManager* CreateEntityManager(int initial_capacity) {
     manager->predatorTexture = LoadTexture(PREDATOR_TEXTURE_PATH);
 
     manager->updateEntityStatesTimer = CreateTimer(
-        1.0f, 
+        1.0f,
         true, 
         OnUpdateEntityStatesTimerFinished, 
         manager
@@ -91,12 +94,35 @@ void UpdateEntities(EntityManager* manager, float deltaTime) {
     }
 }
 
-// draw all entities
-void DrawEntities(const EntityManager* manager) {
+void BounceEntitiesInBounds(EntityManager* manager, Rectangle worldBounds) {
     for (int i = 0; i < manager->size; i++) {
-        if (manager->data[i] == NULL) continue;
-    
-        Entity* entity = manager->data[i];
+        Entity* e = manager->data[i];
+        if (!e) continue;
+
+        // bounce x
+        if (e->position.x < worldBounds.x) { e->position.x = worldBounds.x; e->velocity.x *= -1; }
+        if (e->position.x > worldBounds.x + worldBounds.width) { 
+            e->position.x = worldBounds.x + worldBounds.width; 
+            e->velocity.x *= -1; 
+        }
+
+        // bounce y
+        if (e->position.y < worldBounds.y) { e->position.y = worldBounds.y; e->velocity.y *= -1; }
+        if (e->position.y > worldBounds.y + worldBounds.height) { 
+            e->position.y = worldBounds.y + worldBounds.height; 
+            e->velocity.y *= -1; 
+        }
+    }
+}
+
+// draw all entities
+void DrawEntities(const EntityManager* manager, QuadTree* quadTree, UserCamera* cam) {
+    Entity** visible = malloc(sizeof(Entity*) * MAX_VISIBLE);
+    int visibleCount = 0;
+    QueryQuadTree(quadTree, GetUserCameraRect(cam), visible, &visibleCount);
+        
+    for (int i = 0; i < visibleCount; i++) {
+        Entity* entity = visible[i];
 
         switch (entity->type) {
             case PREY:
@@ -105,7 +131,6 @@ void DrawEntities(const EntityManager* manager) {
             case PREDATOR:
                 DrawPredator(entity, (Texture2D*)&manager->predatorTexture);
                 break;
-            
         }
     }
 }

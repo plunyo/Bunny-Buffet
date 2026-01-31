@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 
+#define ENTITY_SIZE 256.0f
 
 typedef enum EntityType {
     PREY,
@@ -40,7 +41,6 @@ typedef struct Entity {
 Entity CreateEntity(const char* name, EntityType type, Vector2 position, float speed, int health);
 void UpdateEntity(Entity* entity, float deltaTime);
 void UpdateEntityState(Entity* entity);
-
 
 // prey-specific functions
 Entity CreatePrey(const char* name, Vector2 position, float speed, int health, float fleeRange);

@@ -1,4 +1,5 @@
 #include "entity/entity.h"
+#include <raymath.h>
 
 // create a predator
 Entity CreatePredator(const char* name, Vector2 position, float speed, int health, float huntRange) {
@@ -23,9 +24,9 @@ void UpdatePredatorState(Entity *predator) {
 void DrawPredator(const Entity* predator, Texture2D* texture) {
     DrawTextureEx(
         *texture, 
-        predator->position,
+        Vector2SubtractValue(predator->position, ENTITY_SIZE / 2),
         0.0f,
         1.0f,
-        WHITE
+        RED
     );
 } 

@@ -1,5 +1,6 @@
 #include "entity/entity.h"
 #include <raylib.h>
+#include <raymath.h>
 
 // create a prey
 Entity CreatePrey(const char* name, Vector2 position, float speed, int health, float fleeRange) {
@@ -24,9 +25,9 @@ void UpdatePreyState(Entity *prey) {
 void DrawPrey(const Entity *prey, Texture2D* texture) {
     DrawTextureEx(
         *texture,
-        prey->position,
+        Vector2SubtractValue(prey->position, ENTITY_SIZE / 2),
         0.0f,
-        0.8f,
+        1.0f,
         WHITE
     );
 }

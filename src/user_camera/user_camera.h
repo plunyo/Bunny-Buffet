@@ -6,7 +6,7 @@
 #define CAMERA_SPEED 800.0f
 #define SPRINT_MULTIPLIER 1.8f
 
-#define MIN_ZOOM 0.1f
+#define MIN_ZOOM 0.01f
 #define MAX_ZOOM 5.0f
 
 #define ZOOM_LERP_SPEED 8.0f
@@ -21,6 +21,7 @@ typedef struct UserCamera {
 
 UserCamera CreateUserCamera(Vector2 target);
 void UpdateUserCamera(UserCamera* userCamera, float deltaTime);
-
 void BeginUserCameraMode(UserCamera* userCamera);
 void EndUserCameraMode();
+
+Rectangle GetUserCameraRect(const UserCamera* userCamera);

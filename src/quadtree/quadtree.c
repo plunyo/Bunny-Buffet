@@ -1,9 +1,13 @@
 #include "quadtree/quadtree.h"
 #include <raylib.h>
 #include <stdlib.h>
+#include <stdio.h>
+
+static const Color palette[] = { DARKBLUE, BLUE, SKYBLUE, GREEN, LIME, YELLOW, ORANGE, RED };
+static const int paletteSize = sizeof(palette) / sizeof(palette[0]);
 
 QuadTree* CreateQuadTree(Rectangle boundary) {
-    QuadTree* qt = MemAlloc(sizeof(QuadTree));
+    QuadTree* qt = calloc(1, sizeof(QuadTree));
 
     qt->boundary = boundary;
     qt->count = 0;
@@ -50,7 +54,6 @@ bool InsertEntity(QuadTree* qt, Entity* entity) {
                 !InsertEntity(qt->northwest, e) &&
                 !InsertEntity(qt->southeast, e) &&
                 !InsertEntity(qt->southwest, e)) {
-                // should never happen if boundaries are correct
             }
         }
 
@@ -93,6 +96,29 @@ void ClearQuadTree(QuadTree* qt) {
         ClearQuadTree(qt->southeast);
         ClearQuadTree(qt->southwest);
     }
+}
+
+void DrawQuadTree(QuadTree* qt, int depth) {
+    if (!qt) return;
+
+    // skip tiny nodes
+    if (qt->boundary.width < 5 || qt->boundary.height < 5) return;
+
+    Color color = palette[depth % paletteSize];
+
+    float thickness = 20.0f - depth;
+    if (thickness < 1.0f) thickness = 1.0f;
+
+    DrawRectangleLinesEx(qt->boundary, thickness, ColorAlpha(color, 0.4f));
+
+    Vector2 center = { qt->boundary.x + qt->boundary.width / 2.0f,
+                       qt->boundary.y + qt->boundary.height / 2.0f };
+    DrawText(TextFormat("%d", qt->count), (int)center.x - 20, (int)center.y - 20, 40, color);
+
+    if (qt->northeast) DrawQuadTree(qt->northeast, depth + 1);
+    if (qt->northwest) DrawQuadTree(qt->northwest, depth + 1);
+    if (qt->southeast) DrawQuadTree(qt->southeast, depth + 1);
+    if (qt->southwest) DrawQuadTree(qt->southwest, depth + 1);
 }
 
 void DestroyQuadTree(QuadTree* qt) {

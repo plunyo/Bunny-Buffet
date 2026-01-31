@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include "entity/entity.h"
 
-#define QUADTREE_CAPACITY 5
+#define QUADTREE_CAPACITY 3
 
 typedef struct QuadTree {
     Rectangle boundary;
@@ -17,3 +17,9 @@ typedef struct QuadTree {
 } QuadTree;
 
 QuadTree* CreateQuadTree(Rectangle boundary);
+void SubdivideQuadTree(QuadTree* qt);
+bool InsertEntity(QuadTree* qt, Entity* entity);
+void QueryQuadTree(QuadTree* qt, Rectangle range, Entity** found, int* foundCount);
+void ClearQuadTree(QuadTree* qt);
+void DrawQuadTree(QuadTree* qt, int depth);
+void DestroyQuadTree(QuadTree* qt);

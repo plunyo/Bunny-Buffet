@@ -60,6 +60,11 @@ Entity CreateEntity(const char* name, EntityType type, Vector2 position, float s
     entity.speed = speed;
     entity.health = health;
 
+    entity.direction = Vector2Normalize((Vector2){
+        GetRandomValue(-100,100),
+        GetRandomValue(-100,100)
+    });
+
     return entity;
 }
 
@@ -68,7 +73,7 @@ static Vector2 GetWanderDirection(Vector2 currentDirection) {
     float currentAngle = atan2f(currentDirection.y, currentDirection.x);
 
     // small random turn instead of full random direction
-    float turn = ((float)GetRandomValue(-1000, 1000) / 1000.0f) * 1.0f;
+    float turn = (float)GetRandomValue(-1000, 1000) / 1000.0f;
 
     float newAngle = currentAngle + turn;
 

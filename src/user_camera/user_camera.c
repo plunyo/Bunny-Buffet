@@ -1,6 +1,8 @@
-#include "camera/camera.h"
+#include "user_camera/user_camera.h"
 
 #include <math.h>
+#include <raylib.h>
+#include <raymath.h>
 
 UserCamera CreateUserCamera(Vector2 target) {
     UserCamera userCamera;
@@ -44,4 +46,14 @@ void BeginUserCameraMode(UserCamera *userCamera) {
 
 void EndUserCameraMode() {
     EndMode2D();
+}
+
+Rectangle GetUserCameraRect(const UserCamera* userCamera) {
+    Vector2 topLeft = GetScreenToWorld2D((Vector2){0,0}, userCamera->camera);
+    Vector2 bottomRight = GetScreenToWorld2D((Vector2){ GetScreenWidth(), GetScreenHeight() }, userCamera->camera);
+
+    float width = bottomRight.x - topLeft.x;
+    float height = bottomRight.y - topLeft.y;
+
+    return (Rectangle){ topLeft.x, topLeft.y, width, height };
 }
