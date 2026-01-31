@@ -11,7 +11,11 @@ typedef enum EntityType {
 
 typedef enum EntityState {
     STATE_WANDERING,
+
+    // predator
     STATE_HUNTING,
+
+    // prey
     STATE_FLEEING,
 } EntityState;
 

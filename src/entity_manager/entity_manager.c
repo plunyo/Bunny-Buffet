@@ -6,9 +6,8 @@
 #include <stdlib.h>
 #include <rlgl.h>
 
-static void OnUpdateEntityStatesTimerFinished(void* context);
+static void OnEntityStatesTimerFinished(void* context);
 
-// create manager
 EntityManager* CreateEntityManager(int initial_capacity) {
     EntityManager* manager = (EntityManager*)MemAlloc(sizeof(EntityManager));
 
@@ -21,10 +20,10 @@ EntityManager* CreateEntityManager(int initial_capacity) {
     manager->preyTexture = LoadTexture(PREY_TEXTURE_PATH);
     manager->predatorTexture = LoadTexture(PREDATOR_TEXTURE_PATH);
 
-    manager->updateEntityStatesTimer = CreateTimer(
+    manager->entityStatesTimer = CreateTimer(
         1.0f,
         true, 
-        OnUpdateEntityStatesTimerFinished, 
+        OnEntityStatesTimerFinished, 
         manager
     );
 
@@ -71,7 +70,6 @@ int AddEntity(EntityManager* manager, Entity entity) {
     return index;
 }
 
-// remove entity
 void RemoveEntity(EntityManager* manager, int index) {
     if (index < 0 || index >= manager->size || manager->data[index] == NULL) {
         return;
@@ -82,35 +80,33 @@ void RemoveEntity(EntityManager* manager, int index) {
     manager->free_slots[manager->free_count++] = index;
 }
 
-// update all entities
 void UpdateEntities(EntityManager* manager, float deltaTime) {
-    UpdateTimer(&manager->updateEntityStatesTimer, deltaTime);
+    UpdateTimer(&manager->entityStatesTimer, deltaTime);
 
     for (int i = 0; i < manager->size; i++) {
         if (manager->data[i] == NULL) continue;
         
         UpdateEntity(manager->data[i], deltaTime);
-        
     }
 }
 
 void BounceEntitiesInBounds(EntityManager* manager, Rectangle worldBounds) {
     for (int i = 0; i < manager->size; i++) {
-        Entity* e = manager->data[i];
-        if (!e) continue;
+        Entity* entity = manager->data[i];
+        if (!entity) continue;
 
         // bounce x
-        if (e->position.x < worldBounds.x) { e->position.x = worldBounds.x; e->velocity.x *= -1; }
-        if (e->position.x > worldBounds.x + worldBounds.width) { 
-            e->position.x = worldBounds.x + worldBounds.width; 
-            e->velocity.x *= -1; 
+        if (entity->position.x < worldBounds.x) { entity->position.x = worldBounds.x; entity->velocity.x *= -1; }
+        if (entity->position.x > worldBounds.x + worldBounds.width) { 
+            entity->position.x = worldBounds.x + worldBounds.width; 
+            entity->velocity.x *= -1; 
         }
 
         // bounce y
-        if (e->position.y < worldBounds.y) { e->position.y = worldBounds.y; e->velocity.y *= -1; }
-        if (e->position.y > worldBounds.y + worldBounds.height) { 
-            e->position.y = worldBounds.y + worldBounds.height; 
-            e->velocity.y *= -1; 
+        if (entity->position.y < worldBounds.y) { entity->position.y = worldBounds.y; entity->velocity.y *= -1; }
+        if (entity->position.y > worldBounds.y + worldBounds.height) { 
+            entity->position.y = worldBounds.y + worldBounds.height; 
+            entity->velocity.y *= -1; 
         }
     }
 }
@@ -135,7 +131,7 @@ void DrawEntities(const EntityManager* manager, QuadTree* quadTree, UserCamera* 
     }
 }
 
-static void OnUpdateEntityStatesTimerFinished(void* context) {
+static void OnEntityStatesTimerFinished(void* context) {
     EntityManager* manager = (EntityManager*)context;
 
     for (int i = 0; i < manager->size; i++) {

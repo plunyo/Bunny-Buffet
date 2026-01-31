@@ -37,13 +37,11 @@ bool InsertEntity(QuadTree* qt, Entity* entity) {
         return false;
     }
 
-    // If there's space and we're a leaf, store it here
     if (qt->count < QUADTREE_CAPACITY && qt->northeast == NULL) {
         qt->entities[qt->count++] = entity;
         return true;
     }
 
-    // If we're a leaf but full, subdivide and push entities down
     if (qt->northeast == NULL) {
         SubdivideQuadTree(qt);
 
@@ -57,16 +55,15 @@ bool InsertEntity(QuadTree* qt, Entity* entity) {
             }
         }
 
-        qt->count = 0; // this node is now internal
+        qt->count = 0;
     }
 
-    // Insert new entity into children
     if (InsertEntity(qt->northeast, entity)) return true;
     if (InsertEntity(qt->northwest, entity)) return true;
     if (InsertEntity(qt->southeast, entity)) return true;
     if (InsertEntity(qt->southwest, entity)) return true;
 
-    return false; // shouldn't happen
+    return false;
 }
 
 void QueryQuadTree(QuadTree* qt, Rectangle range, Entity** found, int* foundCount) {

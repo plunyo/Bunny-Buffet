@@ -15,8 +15,8 @@
     WORLD_MAX.y - WORLD_MIN.y       \
 }
 
-#define PREY_COUNT   2500
-#define PRED_COUNT   2500
+#define PREY_COUNT 10000
+#define PRED_COUNT 10000
 
 static Vector2 RandomPosition() {
     return (Vector2){
@@ -56,7 +56,7 @@ static void InitEntities(EntityManager* entityManager) {
                 75.0f  // hunt range
             )
         );
-    }
+    }   
 }
 
 static void SetupWindow() {
@@ -67,7 +67,7 @@ static void SetupWindow() {
 int main(int argc, char* argv[]) {
     SetupWindow();
 
-    SetRandomSeed((unsigned int)time(NULL)); // different spawns every run
+    SetRandomSeed((unsigned int)time(NULL));
 
     UserCamera userCamera = CreateUserCamera((Vector2){ 0.0f, 0.0f });
     EntityManager* entityManager = CreateEntityManager(PREY_COUNT + PRED_COUNT);
@@ -77,9 +77,6 @@ int main(int argc, char* argv[]) {
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
-
-        //fullscreen ig
-        if (IsKeyDown(KEY_F11)) SetWindowState(FLAG_FULLSCREEN_MODE) GET;
 
         UpdateUserCamera(&userCamera, deltaTime);
         UpdateEntities(entityManager, deltaTime);
@@ -96,7 +93,7 @@ int main(int argc, char* argv[]) {
 
             BeginUserCameraMode(&userCamera);
                 DrawEntities(entityManager, rootQuadTree, &userCamera);
-                //DrawQuadTree(rootQuadTree, 0);
+                // DrawQuadTree(rootQuadTree, 0);
             EndUserCameraMode();
 
             DrawFPS(10, 10);

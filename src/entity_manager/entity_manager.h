@@ -20,7 +20,7 @@ typedef struct {
 
     QuadTree* quadTree;
 
-    Timer updateEntityStatesTimer;
+    Timer entityStatesTimer;
 
     Texture2D preyTexture;
     Texture2D predatorTexture;

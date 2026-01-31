@@ -33,7 +33,7 @@ void UpdateEntityState(Entity *entity) {
                 case PREDATOR:
                     UpdatePredatorState(entity);
                     break;
-    } 
+            } 
     }
 }
 
